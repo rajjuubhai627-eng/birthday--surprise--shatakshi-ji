@@ -1,0 +1,2883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Happy Birthday, Shatakshi Ji! 🎂✨</title>
+  <meta name="theme-color" content="#070b14">
+  <meta name="description" content="A magical, interactive birthday surprise and 4-phase story celebration for Shatakshi Ji.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,900&family=Outfit:wght@400;500;600;700;800;900&family=Dancing+Script:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    :root {
+      --bg: #070b14;
+      --cyan: #38bdf8;
+      --purple: #c084fc;
+      --gold: #fbbf24;
+      --rose: #fb7185;
+      --indigo: #818cf8;
+      --green: #34d399;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg);
+      color: #f8fafc;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      user-select: none;
+    }
+
+    /* ============================================================
+       BACKGROUND CELEBRATION CANVAS (Continuous Balloons + Confetti + Stars)
+       ============================================================ */
+    #celebCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    #magicCursorCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .cursor-spotlight {
+      position: fixed;
+      width: 550px;
+      height: 550px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(129, 140, 248, 0.08) 0%, rgba(192, 132, 252, 0.04) 40%, transparent 70%);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      transition: opacity 0.5s ease;
+    }
+
+    /* ============================================================
+       TOP FIXED NAVIGATION BAR — 6 SEQUENTIAL STORY CHAPTERS
+       ============================================================ */
+    .top-navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 72px;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(7, 11, 20, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(251, 191, 36, 0.28);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.65), 0 0 20px rgba(251, 191, 36, 0.12);
+      z-index: 100;
+    }
+
+    .brand-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--gold);
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      padding: 6px 12px;
+      border-radius: 999px;
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+    }
+
+    .steps-nav-container {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 13px;
+      border-radius: 999px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+
+    .step-pill:hover:not(.locked) {
+      border-color: var(--cyan);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .step-pill.active {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(251, 191, 36, 0.25));
+      border-color: var(--gold);
+      color: #fef08a;
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+      transform: scale(1.04);
+    }
+
+    .step-pill.completed {
+      border-color: rgba(52, 211, 153, 0.4);
+      color: #a7f3d0;
+      background: rgba(52, 211, 153, 0.08);
+    }
+
+    .step-pill.locked {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .step-icon {
+      font-size: 0.95rem;
+    }
+
+    /* REAL HAPPY BIRTHDAY SONG HUD BUTTON */
+    .music-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 7px 15px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      outline: none;
+      white-space: nowrap;
+    }
+    .music-pill-btn:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    }
+    .music-pill-btn.playing {
+      border-color: var(--gold);
+      box-shadow: 0 0 18px rgba(251, 191, 36, 0.45);
+    }
+    .eq-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2.5px;
+      height: 12px;
+    }
+    .eq-bar {
+      width: 2.5px;
+      background: var(--cyan);
+      border-radius: 1px;
+      animation: eqDance 0.8s infinite ease-in-out alternate;
+    }
+    .music-pill-btn.playing .eq-bar:nth-child(1) { height: 9px; animation-delay: 0.1s; background: var(--gold); }
+    .music-pill-btn.playing .eq-bar:nth-child(2) { height: 13px; animation-delay: 0.3s; background: var(--rose); }
+    .music-pill-btn.playing .eq-bar:nth-child(3) { height: 7px; animation-delay: 0.2s; background: var(--cyan); }
+    .music-pill-btn:not(.playing) .eq-bar { height: 3px; animation: none; background: #64748b; }
+    @keyframes eqDance {
+      0% { height: 4px; }
+      100% { height: 14px; }
+    }
+
+    .toast-msg {
+      position: fixed;
+      top: 86px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.95), rgba(15, 23, 42, 0.95));
+      border: 1px solid var(--gold);
+      color: #fef08a;
+      padding: 10px 24px;
+      border-radius: 999px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(251, 191, 36, 0.4);
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+    }
+    .toast-msg.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ============================================================
+       VERTICAL SLIDER CONTAINER
+       ============================================================ */
+    .vertical-viewport {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .vertical-slides-track {
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s cubic-bezier(0.25, 1, 0.35, 1);
+      will-change: transform;
+    }
+
+    .v-slide {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 95px 24px 60px;
+      scroll-behavior: smooth;
+    }
+
+    .v-slide::-webkit-scrollbar {
+      width: 6px;
+    }
+    .v-slide::-webkit-scrollbar-thumb {
+      background: rgba(251, 191, 36, 0.25);
+      border-radius: 999px;
+    }
+
+    .slide-content-wrap {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin: auto 0;
+    }
+
+    /* Story Chapter Eyebrow & Titles */
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(251, 191, 36, 0.12);
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+      box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff 0%, #fef08a 40%, #fbbf24 85%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 35px rgba(251, 191, 36, 0.3);
+    }
+
+    .section-sub {
+      font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+      color: #cbd5e1;
+      max-width: 720px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .story-card-intro {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(192, 132, 252, 0.25);
+      border-radius: 20px;
+      padding: 18px 24px;
+      max-width: 720px;
+      margin-bottom: 24px;
+      font-size: 1.02rem;
+      color: #e2e8f0;
+      line-height: 1.65;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .story-card-intro strong {
+      color: var(--gold);
+    }
+
+    /* Primary Navigation Button */
+    .btn-step-next {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 34px;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #070b14;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(251, 191, 36, 0.4), 0 0 20px rgba(251, 191, 36, 0.2);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-top: 24px;
+      outline: none;
+    }
+    .btn-step-next:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 14px 40px rgba(251, 191, 36, 0.6), 0 0 30px rgba(251, 191, 36, 0.3);
+    }
+    .btn-step-next:active {
+      transform: translateY(1px);
+    }
+
+    /* Story bridge container at the bottom of slides */
+    .story-bridge-box {
+      width: 100%;
+      max-width: 760px;
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.9), rgba(15, 23, 42, 0.9));
+      border: 1.5px solid rgba(251, 191, 36, 0.45);
+      border-radius: 22px;
+      padding: 22px 26px;
+      margin-top: 26px;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(251, 191, 36, 0.15);
+    }
+    .bridge-tag {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--cyan);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .bridge-text {
+      font-size: 1.05rem;
+      color: #f1f5f9;
+      line-height: 1.65;
+    }
+    .bridge-text strong {
+      color: var(--gold);
+    }
+
+    /* ============================================================
+       CHAPTER 1: THE WELCOME SLIDE
+       ============================================================ */
+    .hero-badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .hero-badge-pill {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #fef08a;
+      background: rgba(251, 191, 36, 0.12);
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      padding: 6px 14px;
+      border-radius: 999px;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 6vw, 4.6rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #ffffff 0%, #fef08a 35%, #fbbf24 75%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 50px rgba(251, 191, 36, 0.45);
+    }
+
+    .hero-subtitle-script {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      color: #fde68a;
+      margin-bottom: 20px;
+      text-shadow: 0 0 25px rgba(251, 191, 36, 0.4);
+    }
+
+    .hero-intro-text {
+      max-width: 660px;
+      font-size: 1.12rem;
+      color: #cbd5e1;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    /* Continuous Marquee Streamer */
+    .marquee-streamer {
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      overflow: hidden;
+      margin-top: 15px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .marquee-track {
+      display: flex;
+      white-space: nowrap;
+      animation: marqueeFlow 26s linear infinite;
+      gap: 18px;
+    }
+    .marquee-track.reverse {
+      animation-direction: reverse;
+      animation-duration: 30s;
+    }
+    @keyframes marqueeFlow {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      border-radius: 999px;
+      padding: 6px 18px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      backdrop-filter: blur(10px);
+    }
+    .ticker-chip.gold { border-color: var(--gold); color: #fef08a; background: rgba(251, 191, 36, 0.12); }
+    .ticker-chip.cyan { border-color: var(--cyan); color: #bae6fd; background: rgba(56, 189, 248, 0.12); }
+    .ticker-chip.purple { border-color: var(--purple); color: #f3e8ff; background: rgba(192, 132, 252, 0.12); }
+    .ticker-chip.rose { border-color: var(--rose); color: #ffe4e6; background: rgba(251, 113, 133, 0.12); }
+
+    /* ============================================================
+       CHAPTER 2: CAKE CUTTING & POPPING WISH LETTER (RIGHT IN CENTER!)
+       ============================================================ */
+    .cake-split-master {
+      position: relative;
+      width: 100%;
+      max-width: 840px;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      margin: 10px 0 10px;
+    }
+
+    .cake-stage-wrapper {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 350px;
+    }
+
+    .cake-scene {
+      position: relative;
+      width: 320px;
+      height: 330px;
+      margin: 0 auto;
+      cursor: pointer;
+      transition: all 0.9s cubic-bezier(0.25, 1, 0.35, 1);
+      z-index: 5;
+    }
+
+    .cake-halves-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .cake-half {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transition: transform 1.1s cubic-bezier(0.25, 1, 0.35, 1), opacity 0.8s ease;
+      will-change: transform, opacity;
+    }
+
+    .cake-half.half-left {
+      clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+    }
+
+    .cake-half.half-right {
+      clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+    }
+
+    /* When cut: Cake splits left & right gracefully! */
+    .cake-scene.cut-split .cake-half.half-left {
+      transform: translateX(-190px) rotate(-6deg) scale(0.82);
+      opacity: 0.28;
+    }
+    .cake-scene.cut-split .cake-half.half-right {
+      transform: translateX(190px) rotate(6deg) scale(0.82);
+      opacity: 0.28;
+    }
+
+    /* THE POPPING HEARTFELT WISH LETTER (Pops right in the center of the cake!) */
+    .unfolded-wish-stage {
+      display: none;
+      width: 100%;
+      max-width: 780px;
+      background: linear-gradient(160deg, rgba(15, 23, 42, 0.98), rgba(30, 27, 75, 0.98));
+      border: 2px solid var(--gold);
+      border-radius: 28px;
+      padding: 34px 32px;
+      box-shadow: 0 25px 65px -10px rgba(0, 0, 0, 0.95), 0 0 50px rgba(251, 191, 36, 0.4);
+      text-align: left;
+      backdrop-filter: blur(25px);
+      z-index: 25;
+      margin-top: -310px;
+    }
+
+    .unfolded-wish-stage.revealed {
+      display: block;
+      animation: popPopWish 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes popPopWish {
+      0% {
+        opacity: 0;
+        transform: scale(0.1) translateY(30px);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.06) translateY(-8px);
+      }
+      75% {
+        transform: scale(0.97) translateY(2px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .candles-row {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 3px;
+      position: relative;
+      z-index: 5;
+    }
+    .candle { display: flex; flex-direction: column; align-items: center; }
+
+    .flame-wrap { position: relative; width: 14px; height: 22px; }
+    .flame {
+      width: 14px;
+      height: 20px;
+      background: radial-gradient(ellipse at 50% 80%, #fff 0%, #fbbf24 28%, #f97316 58%, transparent 82%);
+      border-radius: 50% 50% 38% 38%;
+      animation: flicker 0.11s infinite alternate;
+      transform-origin: bottom center;
+      box-shadow: 0 0 10px 5px rgba(251, 191, 36, 0.85), 0 0 24px 10px rgba(249, 115, 22, 0.5);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    @keyframes flicker {
+      0%   { transform: scaleX(1) scaleY(1) rotate(-4deg); }
+      33%  { transform: scaleX(0.88) scaleY(1.06) rotate(2deg); }
+      66%  { transform: scaleX(1.12) scaleY(0.93) rotate(-2deg); }
+      100% { transform: scaleX(0.95) scaleY(1.04) rotate(4deg); }
+    }
+    .flame.out { opacity: 0; transform: scaleX(0.1) scaleY(0.1); }
+
+    .smoke-puff {
+      position: absolute;
+      top: -8px; left: 50%;
+      transform: translateX(-50%);
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(200, 200, 220, 0.55);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .smoke-puff.puffing { animation: smokePuff 1.4s ease-out forwards; }
+    @keyframes smokePuff {
+      0%   { opacity: 0.7; transform: translateX(-50%) translateY(0) scale(1); }
+      100% { opacity: 0;   transform: translateX(-50%) translateY(-36px) scale(5); }
+    }
+
+    .candle-stick {
+      width: 11px; height: 38px;
+      background: linear-gradient(180deg, #f0d4ff 0%, #c084fc 45%, #9333ea 100%);
+      border-radius: 5px 5px 2px 2px;
+      box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.3);
+    }
+    .candle-base {
+      width: 16px; height: 5px;
+      background: linear-gradient(90deg, #d946ef, #a855f7);
+      border-radius: 3px;
+    }
+
+    .cake-body { position: relative; }
+    .tier {
+      position: relative;
+      margin: 0 auto;
+      border-radius: 18px 18px 10px 10px;
+    }
+    .tier-bottom {
+      width: 270px; height: 110px;
+      background: linear-gradient(160deg, #1a0d5e 0%, #2d1b8a 50%, #150a55 100%);
+      box-shadow: inset 0 -10px 24px rgba(0, 0, 0, 0.55), inset 0 4px 12px rgba(255, 255, 255, 0.07), 0 8px 24px rgba(0, 0, 0, 0.6);
+    }
+    .tier-mid {
+      width: 206px; height: 88px;
+      background: linear-gradient(160deg, #450e8a 0%, #6d28d9 50%, #3b0880 100%);
+      box-shadow: inset 0 -8px 20px rgba(0, 0, 0, 0.5), inset 0 3px 10px rgba(255, 255, 255, 0.1), 0 6px 18px rgba(0, 0, 0, 0.5);
+    }
+    .tier-top {
+      width: 146px; height: 72px;
+      background: linear-gradient(160deg, #7c128f 0%, #a855f7 50%, #5b0d6b 100%);
+      box-shadow: inset 0 -6px 16px rgba(0, 0, 0, 0.45), inset 0 3px 8px rgba(255, 255, 255, 0.15), 0 5px 14px rgba(0, 0, 0, 0.45);
+    }
+
+    .drip {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 18px;
+      border-radius: 18px 18px 0 0;
+    }
+    .drip-pink {
+      background: #f472b6;
+      box-shadow: 0 4px 10px rgba(244, 114, 182, 0.5);
+    }
+    .drip-white {
+      background: #fdf4ff;
+      box-shadow: 0 4px 10px rgba(253, 244, 255, 0.5);
+    }
+    .drip-gold {
+      background: #fbbf24;
+      box-shadow: 0 4px 12px rgba(251, 191, 36, 0.6);
+    }
+
+    .tier-deco {
+      position: absolute;
+      top: 50%; left: 0; right: 0;
+      transform: translateY(-50%);
+      display: flex;
+      justify-content: space-evenly;
+      font-size: 0.82rem;
+      opacity: 0.85;
+    }
+
+    .cake-plate {
+      width: 310px; height: 16px;
+      background: linear-gradient(180deg, #fbbf24 0%, #b45309 60%, #78350f 100%);
+      border-radius: 50%;
+      margin: 0 auto;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.8), 0 0 25px rgba(251, 191, 36, 0.35);
+    }
+
+    /* Animated Knife */
+    .knife-outer {
+      position: absolute;
+      top: -50px; right: 10px;
+      width: 50px; height: 180px;
+      transform-origin: bottom right;
+      transform: rotate(38deg);
+      transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 20;
+      pointer-events: none;
+    }
+    .knife-outer.swinging {
+      animation: knifeSlice 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+    @keyframes knifeSlice {
+      0%   { transform: rotate(38deg) translateY(0); }
+      40%  { transform: rotate(-18deg) translateY(80px) translateX(-50px); }
+      75%  { transform: rotate(-5deg) translateY(115px) translateX(-70px); }
+      100% { transform: rotate(20deg) translateY(30px) translateX(-40px) scale(0.85); opacity: 0.2; }
+    }
+
+    .knife-handle {
+      width: 22px; height: 58px;
+      background: linear-gradient(180deg, #3a3a3a 0%, #111 50%, #2c2c2c 100%);
+      border-radius: 6px 6px 10px 10px;
+      margin: 0 auto;
+      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    }
+    .knife-guard {
+      width: 32px; height: 10px;
+      background: linear-gradient(90deg, #777, #d4d4d4, #777);
+      border-radius: 4px;
+      margin: 0 auto;
+    }
+    .knife-blade {
+      width: 15px; height: 110px;
+      background: linear-gradient(180deg, #f8f8f8 0%, #e0e0e0 15%, #fff 35%, #c0c0c0 55%, #a0a0a0 100%);
+      clip-path: polygon(0 0, 100% 0, 72% 100%, 0 100%);
+      margin: 0 auto;
+      box-shadow: 3px 0 14px rgba(255, 255, 255, 0.35);
+    }
+
+    .cut-flash {
+      position: absolute;
+      left: 50%; top: 30px;
+      width: 2px; height: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(251, 191, 36, 0.5));
+      transform: translateX(-50%);
+      transition: height 0.45s ease 0.35s;
+      pointer-events: none;
+      z-index: 22;
+    }
+    .cut-flash.active { height: 260px; }
+
+    .cake-tap-hint {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: rgba(251, 191, 36, 0.95);
+      animation: hintPulse 2.2s ease-in-out infinite;
+    }
+    @keyframes hintPulse {
+      0%, 100% { opacity: 0.75; transform: scale(1); }
+      50%      { opacity: 1; transform: scale(1.05); }
+    }
+
+    .cake-relight-btn {
+      margin-top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 24px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(251, 191, 36, 0.45);
+      border-radius: 999px;
+      color: #fef08a;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      outline: none;
+    }
+    .cake-relight-btn.show { opacity: 1; pointer-events: auto; }
+
+    /* Salutation & Body of the Letter */
+    .letter-salutation {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 18px;
+    }
+    .letter-body {
+      font-size: 1.02rem;
+      line-height: 1.8;
+      color: #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .letter-body strong {
+      color: #fef08a;
+      font-weight: 700;
+    }
+
+    /* ============================================================
+       CHAPTER 3: MIDNIGHT CAR BOOT SURPRISE
+       ============================================================ */
+    .video-card-container {
+      position: relative;
+      width: 100%;
+      max-width: 780px;
+      border-radius: 26px;
+      overflow: hidden;
+      border: 2px solid rgba(251, 191, 36, 0.5);
+      box-shadow: 0 25px 65px -10px rgba(0, 0, 0, 0.95), 0 0 35px rgba(251, 191, 36, 0.35);
+      background: #000;
+      margin: 15px 0 10px;
+    }
+
+    .video-element {
+      width: 100%;
+      display: block;
+      border-radius: 24px;
+      max-height: 480px;
+      object-fit: cover;
+    }
+
+    .video-overlay-play-btn {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(7, 11, 20, 0.65);
+      backdrop-filter: blur(4px);
+      cursor: pointer;
+      transition: all 0.35s ease;
+      z-index: 10;
+    }
+    .video-overlay-play-btn.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .play-circle-glow {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 30px rgba(251, 191, 36, 0.8), 0 0 60px rgba(251, 191, 36, 0.4);
+      margin-bottom: 14px;
+      transition: transform 0.3s ease;
+      animation: playPulse 2s infinite ease-in-out;
+    }
+    @keyframes playPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(251, 191, 36, 0.8); }
+      50%      { transform: scale(1.08); box-shadow: 0 0 50px rgba(251, 191, 36, 1); }
+    }
+    .play-icon-triangle {
+      width: 0;
+      height: 0;
+      border-top: 14px solid transparent;
+      border-bottom: 14px solid transparent;
+      border-left: 24px solid #070b14;
+      margin-left: 6px;
+    }
+    .play-overlay-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fff;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+      letter-spacing: 0.04em;
+    }
+
+    .video-controls-bar {
+      position: absolute;
+      bottom: 14px;
+      right: 18px;
+      display: flex;
+      gap: 10px;
+      z-index: 15;
+    }
+    .vid-hud-btn {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+    .vid-hud-btn:hover {
+      border-color: var(--gold);
+      color: #fef08a;
+    }
+
+    /* ============================================================
+       CHAPTER 4: REAL AI MIDNIGHT SKY, WISHING STAR & HUGE CLOUD DROP
+       ============================================================ */
+    .night-sky-chamber {
+      position: relative;
+      width: 100%;
+      max-width: 840px;
+      min-height: 580px;
+      background: #070b14 url('midnight_sky.png') no-repeat center top / cover;
+      border: 2px solid rgba(56, 189, 248, 0.5);
+      border-radius: 32px;
+      padding: 34px 26px 40px;
+      box-shadow: 0 30px 80px -10px rgba(0, 0, 0, 0.98), 0 0 55px rgba(56, 189, 248, 0.35);
+      overflow: hidden;
+      margin: 10px 0 15px;
+    }
+
+    /* Dark gradient scrim over AI background for crisp UI contrast */
+    .sky-scrim-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(7, 11, 20, 0.45) 0%, rgba(10, 15, 30, 0.72) 40%, rgba(7, 11, 20, 0.92) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* The Radiant Wishing Star in the Upper Center */
+    .wishing-star-target {
+      position: absolute;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 4;
+      pointer-events: none;
+    }
+    .star-core {
+      width: 16px;
+      height: 16px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 25px 8px #fff, 0 0 50px 18px #38bdf8, 0 0 85px 30px #c084fc;
+      animation: starRadiate 2s infinite alternate ease-in-out;
+    }
+    @keyframes starRadiate {
+      0%   { transform: scale(0.9); box-shadow: 0 0 20px 6px #fff, 0 0 40px 12px #38bdf8; }
+      100% { transform: scale(1.25); box-shadow: 0 0 35px 12px #fff, 0 0 65px 25px #38bdf8, 0 0 95px 40px #fef08a; }
+    }
+    .wishing-star-label {
+      position: absolute;
+      top: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #fef08a;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+    }
+
+    /* Ambient drifting cloud puffs */
+    .drift-cloud-layer {
+      position: absolute;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.35;
+      filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.4));
+    }
+    .drift-cloud-l {
+      top: 25px;
+      left: -20px;
+      animation: driftL 18s ease-in-out infinite alternate;
+    }
+    .drift-cloud-r {
+      top: 80px;
+      right: -30px;
+      animation: driftR 22s ease-in-out infinite alternate;
+    }
+    @keyframes driftL {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(45px); }
+    }
+    @keyframes driftR {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50px); }
+    }
+
+    /* Wish Section (Wish Maangiye) */
+    .wish-box-inner {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .wish-callout-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #fef08a;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.25), rgba(56, 189, 248, 0.25));
+      border: 1.5px solid var(--gold);
+      padding: 8px 22px;
+      border-radius: 999px;
+      margin-top: 55px;
+      margin-bottom: 16px;
+      box-shadow: 0 0 25px rgba(251, 191, 36, 0.45);
+      letter-spacing: 0.05em;
+    }
+
+    /* Ascending Wish Orb Animation (flies up and merges into star) */
+    .wish-flying-orb {
+      position: absolute;
+      bottom: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff 0%, #fef08a 40%, #fbbf24 75%, transparent 100%);
+      box-shadow: 0 0 25px #fff, 0 0 45px #fbbf24;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 12;
+      transition: all 1.8s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .wish-flying-orb.launching {
+      opacity: 1;
+      bottom: calc(100% - 95px); /* Reaches the wishing star! */
+      transform: translateX(-50%) scale(1.6);
+    }
+    .wish-flying-orb.merged {
+      opacity: 0;
+      transform: translateX(-50%) scale(4);
+      filter: blur(10px);
+    }
+
+    .quick-wish-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      width: 100%;
+      max-width: 650px;
+    }
+    .wish-chip-btn {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #e2e8f0;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.84rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+    .wish-chip-btn:hover, .wish-chip-btn.selected {
+      border-color: var(--gold);
+      background: rgba(251, 191, 36, 0.22);
+      color: #fef08a;
+      transform: translateY(-2px);
+      box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+    }
+
+    .wish-input-wrap {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      max-width: 620px;
+      margin-bottom: 10px;
+    }
+    .wish-text-field {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.88);
+      border: 1.5px solid rgba(56, 189, 248, 0.4);
+      border-radius: 999px;
+      padding: 12px 22px;
+      color: #fff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(10px);
+    }
+    .wish-text-field:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.35);
+    }
+    .wish-submit-btn {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      border: none;
+      color: #070b14;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      padding: 12px 26px;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 5px 25px rgba(251, 191, 36, 0.45);
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+    .wish-submit-btn:hover {
+      transform: scale(1.04);
+      box-shadow: 0 8px 30px rgba(251, 191, 36, 0.65);
+    }
+
+    /* ============================================================
+       THE HUGE REALISTIC FALLING CLOUD WITH SHAYARI (EK BADA BADAL GIREGA!)
+       ============================================================ */
+    .mega-cloud-drop-container {
+      position: relative;
+      width: 100%;
+      max-width: 760px;
+      margin-top: 24px;
+      z-index: 15;
+      display: none;
+    }
+
+    .mega-cloud-drop-container.revealed {
+      display: block;
+      animation: dropHugeCloud 1.35s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    }
+
+    @keyframes dropHugeCloud {
+      0% {
+        transform: translateY(-220px) scale(0.6);
+        opacity: 0;
+        filter: blur(14px);
+      }
+      55% {
+        transform: translateY(18px) scale(1.03);
+        opacity: 1;
+        filter: blur(0);
+      }
+      75% {
+        transform: translateY(-6px) scale(0.985);
+      }
+      100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Sculpted Voluminous Cloud Card Shape */
+    .sculpted-cloud-card {
+      position: relative;
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.96) 0%, rgba(241, 245, 249, 0.94) 40%, rgba(226, 232, 240, 0.92) 100%);
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      border-radius: 36px;
+      padding: 38px 36px 32px;
+      color: #0f172a;
+      box-shadow: 
+        0 25px 65px -10px rgba(0, 0, 0, 0.8),
+        0 0 50px rgba(255, 255, 255, 0.45),
+        inset 0 2px 10px rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(25px);
+      text-align: center;
+    }
+
+    /* Fluffy Cloud Bulb Accents on Outer Edges */
+    .sculpted-cloud-card::before {
+      content: '';
+      position: absolute;
+      top: -24px;
+      left: 15%;
+      width: 110px;
+      height: 55px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 50%;
+      box-shadow: 0 -5px 25px rgba(255, 255, 255, 0.6);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .sculpted-cloud-card::after {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: 20%;
+      width: 130px;
+      height: 65px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 50%;
+      box-shadow: 0 -5px 30px rgba(255, 255, 255, 0.6);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .cloud-header-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #1e1b4b;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.35), rgba(192, 132, 252, 0.35));
+      border: 1px solid rgba(129, 140, 248, 0.5);
+      padding: 6px 18px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* The Beautiful Heartfelt Shayari Inscribed on the Cloud */
+    .cloud-shayari-content {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 2.1;
+      margin-bottom: 22px;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    }
+    .s-line {
+      margin: 3px 0;
+    }
+    .s-line.highlight {
+      color: #7c3aed; /* Royal violet emphasis */
+    }
+    .s-stanza-break {
+      height: 12px;
+    }
+
+    .cloud-footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1.5px solid rgba(148, 163, 184, 0.3);
+      padding-top: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .cloud-author {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #2563eb;
+    }
+    .cloud-hbd {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.35rem;
+      color: #e11d48;
+      font-weight: 700;
+    }
+
+    .btn-replay-cloud-drop {
+      background: rgba(15, 23, 42, 0.08);
+      border: 1px solid rgba(15, 23, 42, 0.2);
+      color: #334155;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      margin-top: 14px;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-replay-cloud-drop:hover {
+      background: rgba(15, 23, 42, 0.15);
+      color: #0f172a;
+    }
+
+    /* ============================================================
+       CHAPTER 5: THE 4-PHASE CONNECTION SAFAR (AUGUST TO NOVEMBER)
+       ============================================================ */
+    .memories-container {
+      width: 100%;
+      max-width: 800px;
+      margin: 10px 0 15px;
+    }
+
+    .phases-stepper {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+    .phase-step-pill {
+      flex: 1;
+      min-width: 155px;
+      padding: 12px 14px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .phase-step-pill.active {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(192, 132, 252, 0.2));
+      border-color: var(--cyan);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+      transform: translateY(-2px);
+    }
+    .phase-step-pill.completed {
+      border-color: rgba(52, 211, 153, 0.4);
+    }
+    .phase-pill-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+    .phase-pill-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .phase-card-display {
+      background: linear-gradient(160deg, rgba(15, 23, 42, 0.95), rgba(30, 27, 75, 0.92));
+      border: 1.5px solid rgba(56, 189, 248, 0.45);
+      border-radius: 26px;
+      padding: 34px 32px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 35px rgba(56, 189, 248, 0.2);
+      text-align: left;
+      min-height: 270px;
+    }
+    .phase-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .phase-badge {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--cyan);
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      padding: 5px 14px;
+      border-radius: 999px;
+    }
+    .phase-time {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+    .phase-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+    .phase-body-text {
+      font-size: 1.05rem;
+      color: #cbd5e1;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .phase-body-text strong {
+      color: #fef08a;
+    }
+
+    .memory-advance-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .btn-mem-next {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid var(--cyan);
+      color: #bae6fd;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding: 9px 20px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .btn-mem-next:hover {
+      background: var(--cyan);
+      color: #070b14;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    }
+
+    /* ============================================================
+       CHAPTER 6: GRAND FINALE & DANCING TEDDY BEAR
+       ============================================================ */
+    .celeb-emoji-big {
+      font-size: 3.5rem;
+      margin-bottom: 12px;
+      animation: emojiBounce 1.5s infinite alternate ease-in-out;
+    }
+    @keyframes emojiBounce {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-10px) scale(1.1); }
+    }
+
+    .celeb-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5.5vw, 4.2rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #fff 0%, #fef08a 35%, #fbbf24 75%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 50px rgba(251, 191, 36, 0.5);
+    }
+
+    .celeb-script {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      color: #fde68a;
+      margin-bottom: 20px;
+      text-shadow: 0 0 30px rgba(251, 191, 36, 0.45);
+    }
+
+    /* Adorable Dancing Teddy Bear */
+    .teddy-companion {
+      position: relative;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px 0 24px;
+      animation: teddySway 2.2s infinite ease-in-out alternate;
+    }
+    @keyframes teddySway {
+      0%   { transform: rotate(-4deg) translateY(0); }
+      50%  { transform: rotate(0deg) translateY(-8px); }
+      100% { transform: rotate(4deg) translateY(0); }
+    }
+    .teddy-speech-bubble {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(254, 240, 138, 0.95));
+      color: #1e1b4b;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+      margin-bottom: 6px;
+      position: relative;
+      white-space: nowrap;
+    }
+    .teddy-speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px 6px 0;
+      border-style: solid;
+      border-color: rgba(254, 240, 138, 0.95) transparent;
+      display: block;
+      width: 0;
+    }
+    .teddy-svg {
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.6));
+    }
+    .teddy-arm-l {
+      animation: armWaveL 1.2s infinite ease-in-out alternate;
+      transform-origin: 30px 88px;
+    }
+    .teddy-arm-r {
+      animation: armWaveR 1.2s infinite ease-in-out alternate;
+      transform-origin: 90px 88px;
+    }
+    @keyframes armWaveL {
+      0%   { transform: rotate(15deg); }
+      100% { transform: rotate(45deg); }
+    }
+    @keyframes armWaveR {
+      0%   { transform: rotate(-45deg); }
+      100% { transform: rotate(-15deg); }
+    }
+
+    .celeb-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      width: 100%;
+      max-width: 680px;
+      margin-bottom: 24px;
+    }
+    .celeb-card {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: 18px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+      backdrop-filter: blur(10px);
+    }
+    .celeb-card .c-icon { font-size: 1.5rem; }
+    .celeb-card .c-label { font-size: 0.92rem; font-weight: 700; color: #f1f5f9; }
+
+    .fireworks-trigger-btn {
+      background: linear-gradient(135deg, #ec4899, #f43f5e, #fbbf24);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      padding: 14px 36px;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(244, 63, 94, 0.4), 0 0 25px rgba(251, 191, 36, 0.3);
+      transition: all 0.3s ease;
+      outline: none;
+      margin-bottom: 20px;
+    }
+    .fireworks-trigger-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 14px 45px rgba(244, 63, 94, 0.6), 0 0 35px rgba(251, 191, 36, 0.5);
+    }
+
+    .milte-hain {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #fff;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+    .milte-sub {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      margin-bottom: 15px;
+    }
+    .footer-sig {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 24px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 640px) {
+      .top-navbar { height: 64px; padding: 8px 12px; }
+      .steps-nav-container { gap: 4px; }
+      .step-pill { padding: 5px 9px; font-size: 0.72rem; }
+      .brand-badge { display: none; }
+      .celeb-grid { grid-template-columns: 1fr; }
+      .unfolded-wish-stage { padding: 22px 18px; margin-top: -300px; }
+      .phase-card-display { padding: 22px 18px; }
+      .night-sky-chamber { padding: 22px 14px; min-height: 520px; }
+      .sculpted-cloud-card { padding: 26px 18px 22px; }
+      .cloud-shayari-content { font-size: 1rem; line-height: 1.9; }
+      .cake-scene.cut-split .cake-half.half-left { transform: translateX(-120px) rotate(-6deg) scale(0.75); opacity: 0.18; }
+      .cake-scene.cut-split .cake-half.half-right { transform: translateX(120px) rotate(6deg) scale(0.75); opacity: 0.18; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Real Happy Birthday Audio File -->
+<audio id="realBdayAudio" src="happy_birthday.mp3" preload="auto" loop></audio>
+
+<!-- Background Canvas for Ambient Fireworks, Floating Balloons, and Stars -->
+<canvas id="celebCanvas"></canvas>
+<canvas id="magicCursorCanvas"></canvas>
+<div class="cursor-spotlight" id="cursorSpotlight"></div>
+
+<!-- Toast notification for sequential lock -->
+<div class="toast-msg" id="toastMsg">Pehle Step complete kijiye! ✨</div>
+
+<!-- ============================================================
+     TOP NAVBAR: 6 SEQUENTIAL STORY CHAPTERS
+     ============================================================ -->
+<header class="top-navbar">
+  <div class="brand-badge">
+    <span>🎂</span>
+    <span>16 November • Celebration</span>
+  </div>
+
+  <nav class="steps-nav-container" id="stepsNav">
+    <div class="step-pill active" id="stepPill0" data-step="0">
+      <span class="step-icon">✨</span>
+      <span>1. Welcome</span>
+    </div>
+    <div class="step-pill locked" id="stepPill1" data-step="1">
+      <span class="step-icon">🎂</span>
+      <span>2. Cake &amp; Wish</span>
+    </div>
+    <div class="step-pill locked" id="stepPill2" data-step="2">
+      <span class="step-icon">🚗</span>
+      <span>3. Car Surprise</span>
+    </div>
+    <div class="step-pill locked" id="stepPill3" data-step="3">
+      <span class="step-icon">🌟</span>
+      <span>4. Taare &amp; Badal</span>
+    </div>
+    <div class="step-pill locked" id="stepPill4" data-step="4">
+      <span class="step-icon">📖</span>
+      <span>5. 4-Phase Story</span>
+    </div>
+    <div class="step-pill locked" id="stepPill5" data-step="5">
+      <span class="step-icon">🎉</span>
+      <span>6. Grand Finale</span>
+    </div>
+  </nav>
+
+  <button class="music-pill-btn" id="musicToggleBtn" aria-label="Toggle Birthday Music">
+    <div class="eq-bars">
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+      <div class="eq-bar"></div>
+    </div>
+    <span id="musicBtnLabel">Birthday Music</span>
+  </button>
+</header>
+
+<!-- ============================================================
+     VERTICAL VIEWPORT WITH 6 STORY SLIDES
+     ============================================================ -->
+<main class="vertical-viewport">
+  <div class="vertical-slides-track" id="slidesTrack">
+
+    <!-- ========================================================
+         SLIDE 0: CHAPTER 1 • SHUBH SHURUAT (WELCOME)
+         ======================================================== -->
+    <section class="v-slide" id="slide0">
+      <div class="slide-content-wrap">
+        <div class="hero-badge-row">
+          <span class="hero-badge-pill">✨ 16 November</span>
+          <span class="hero-badge-pill">🎉 A Very Special Day</span>
+          <span class="hero-badge-pill">🌟 Team GRIT</span>
+        </div>
+
+        <h1 class="hero-title">Happy Birthday,<br>Shatakshi Ji! 🎂</h1>
+        <p class="hero-subtitle-script">Wishing you endless joy, radiant health &amp; unstoppable success! ✨</p>
+
+        <div class="story-card-intro">
+          <strong>Aaj 16 November ka din hai — ek behad khaas aur yaadgar din! 🌟</strong><br>
+          Har khoobsurat celebration ki ek kahani hoti hai... Aur is celebration ki shuruat hoti hai ek digital cake cutting ceremony se! Toh chaliye, is khoobsurat safar ka pehla kadam uthate hain.
+        </div>
+
+        <div class="marquee-streamer">
+          <div class="marquee-track">
+            <span class="ticker-chip gold">🎂 Happy Birthday Shatakshi Ji!</span>
+            <span class="ticker-chip cyan">🌟 16 November Celebration</span>
+            <span class="ticker-chip purple">💫 Team GRIT &amp; Bright Future</span>
+            <span class="ticker-chip rose">🎉 Endless Smiles &amp; Happiness</span>
+            <span class="ticker-chip gold">🍰 May Every Dream Come True</span>
+            <span class="ticker-chip cyan">🚀 Academic Excellence &amp; Triumph</span>
+            <span class="ticker-chip gold">🎂 Happy Birthday Shatakshi Ji!</span>
+            <span class="ticker-chip cyan">🌟 16 November Celebration</span>
+          </div>
+          <div class="marquee-track reverse">
+            <span class="ticker-chip rose">✨ Pure Blessings &amp; Good Health</span>
+            <span class="ticker-chip purple">🎊 August to November Memories</span>
+            <span class="ticker-chip gold">🎈 Always Rooting For You!</span>
+            <span class="ticker-chip cyan">💙 A Very Special Friend</span>
+            <span class="ticker-chip rose">✨ Pure Blessings &amp; Good Health</span>
+            <span class="ticker-chip purple">🎊 August to November Memories</span>
+          </div>
+        </div>
+
+        <button class="btn-step-next" id="btnNext0">
+          <span>Chapter 2: Cake Cutting Shuru Karein 🎂</span>
+          <span>↓</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SLIDE 1: CHAPTER 2 • CAKE CUTTING & POPPING WISH LETTER (RIGHT IN CENTER)
+         ======================================================== -->
+    <section class="v-slide" id="slide1">
+      <div class="slide-content-wrap">
+        <div class="section-eyebrow">🎂 Chapter 2 • Cake Cutting &amp; Heartfelt Blessings</div>
+        <h2 class="section-title">Your Birthday Cake Awaits! ✨</h2>
+        <p class="section-sub">Tap the cake to slice it with the knife &amp; watch your special wish pop right out from the center! 🔪🍰</p>
+
+        <div class="cake-split-master">
+          <!-- Cake Stage Area -->
+          <div class="cake-stage-wrapper">
+            <div class="cake-scene" id="cakeScene" role="button" aria-label="Tap to cut the birthday cake">
+              <div class="cut-flash" id="cutFlash"></div>
+
+              <div class="knife-outer" id="knifeEl">
+                <div class="knife-handle"></div>
+                <div class="knife-guard"></div>
+                <div class="knife-blade"></div>
+              </div>
+
+              <!-- Two Halves Split Container -->
+              <div class="cake-halves-container">
+                <!-- Left Half -->
+                <div class="cake-half half-left">
+                  <div class="cake-body">
+                    <div class="candles-row">
+                      <div class="candle">
+                        <div class="flame-wrap"><div class="flame" id="fl0"></div><div class="smoke-puff" id="sm0"></div></div>
+                        <div class="candle-stick"></div><div class="candle-base"></div>
+                      </div>
+                      <div class="candle">
+                        <div class="flame-wrap"><div class="flame" id="fl1"></div><div class="smoke-puff" id="sm1"></div></div>
+                        <div class="candle-stick"></div><div class="candle-base"></div>
+                      </div>
+                      <div class="candle">
+                        <div class="flame-wrap"><div class="flame" id="fl2"></div><div class="smoke-puff" id="sm2"></div></div>
+                        <div class="candle-stick"></div><div class="candle-base"></div>
+                      </div>
+                      <div class="candle">
+                        <div class="flame-wrap"><div class="flame" id="fl3"></div><div class="smoke-puff" id="sm3"></div></div>
+                        <div class="candle-stick"></div><div class="candle-base"></div>
+                      </div>
+                    </div>
+
+                    <div class="tier tier-top">
+                      <div class="drip drip-pink"></div>
+                      <div class="tier-deco"><span>⭐</span><span>✦</span><span>⭐</span></div>
+                    </div>
+                    <div class="tier tier-mid">
+                      <div class="drip drip-white"></div>
+                      <div class="tier-deco"><span>🌟</span><span>✦</span><span>✨</span><span>✦</span><span>🌟</span></div>
+                    </div>
+                    <div class="tier tier-bottom">
+                      <div class="drip drip-gold"></div>
+                      <div class="tier-deco"><span>🎂</span><span>✦</span><span>🎊</span><span>✦</span><span>🎈</span><span>✦</span><span>🎂</span></div>
+                    </div>
+                    <div class="cake-plate"></div>
+                  </div>
+                </div>
+
+                <!-- Right Half -->
+                <div class="cake-half half-right">
+                  <div class="cake-body">
+                    <div class="candles-row">
+                      <div class="candle">
+                        <div class="flame-wrap"><div class="flame"></div></div>
+                        <div class="candle-stick"></div><div class="candle-base"></div>
+                      </div>
+                      <div class="candle">
+                        <div class="flame-wrap"><div class="flame"></div></div>
+                        <div class="candle-stick"></div><div class="candle-base"></div>
+                      </div>
+                      <div class="candle">
+                        <div class="flame-wrap"><div class="flame"></div></div>
+                        <div class="candle-stick"></div><div class="candle-base"></div>
+                      </div>
+                      <div class="candle">
+                        <div class="flame-wrap"><div class="flame"></div></div>
+                        <div class="candle-stick"></div><div class="candle-base"></div>
+                      </div>
+                    </div>
+
+                    <div class="tier tier-top">
+                      <div class="drip drip-pink"></div>
+                      <div class="tier-deco"><span>⭐</span><span>✦</span><span>⭐</span></div>
+                    </div>
+                    <div class="tier tier-mid">
+                      <div class="drip drip-white"></div>
+                      <div class="tier-deco"><span>🌟</span><span>✦</span><span>✨</span><span>✦</span><span>🌟</span></div>
+                    </div>
+                    <div class="tier tier-bottom">
+                      <div class="drip drip-gold"></div>
+                      <div class="tier-deco"><span>🎂</span><span>✦</span><span>🎊</span><span>✦</span><span>🎈</span><span>✦</span><span>🎂</span></div>
+                    </div>
+                    <div class="cake-plate"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="cake-tap-hint" id="cakeTapHint">🔪 Tap the cake to cut &amp; reveal your special wish!</div>
+            <button class="cake-relight-btn" id="relightBtn">🕯️ Rejoin &amp; Cut Again</button>
+          </div>
+
+          <!-- THE UNFOLDED HEARTFELT WISH LETTER (Emerged right in the center of the cake!) -->
+          <div class="unfolded-wish-stage" id="unfoldedWishStage">
+            <div class="section-eyebrow" style="margin-bottom: 14px;">💌 Special Birthday Blessing</div>
+            <h3 class="letter-salutation">Dear Shatakshi Ji, 🎉</h3>
+            <div class="letter-body">
+              <p>
+                A very <strong>Happy Birthday! 🎂✨</strong> Aapke is sabse pyare aur khaas din par, dil se yahi prarthana aur duaayein hain ki aane wala har ek din aapke liye nayi umang, bepanah khushiyan aur boundless success le kar aaye! 🌟
+              </p>
+
+              <p>
+                May you always be blessed with <strong>vibrant good health, peace of mind, aur ek aisi muskaan jo hamesha sabka din roshan kar de</strong>. Aap jo bhi sapne dekhein, jo bhi unche mukam aap achieve karna chahein—chahe academic excellence ho ya life ka koi bhi bada goal—aap har ek field mein sabse aage rahein aur khoob tarakki karein! 📚🚀
+              </p>
+
+              <p>
+                Aapka yeh naya saal exciting adventures, wonderful opportunities, top scores, aur sachche doston ki companionship se bhara ho. Aapki positive energy aur confidence har mod par aise hi chamakta rahe! May every path you walk lead to happiness and triumph. 💫
+              </p>
+
+              <div class="story-bridge-box" style="margin-top: 20px; background: rgba(15, 23, 42, 0.9);">
+                <div class="bridge-tag">🚗🎁 Midnight Surprise Alert</div>
+                <p class="bridge-text">
+                  Cake cut ho gaya... aur dil se nikli saari blessings bhi aap tak pahunch gayi! 🍰✨<br>
+                  <strong>Lekin rukiye! Celebration abhi bas shuru hui hai... Bahar aapke liye ek midnight car surprise wait kar raha hai!</strong>
+                </p>
+                <button class="btn-step-next" id="btnNext1" style="margin-top: 16px;">
+                  <span>Chapter 3: Midnight Car Surprise Dekhein 🚗✨</span>
+                  <span>↓</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SLIDE 2: CHAPTER 3 • MIDNIGHT CAR BOOT SURPRISE (REAL VIDEO)
+         ======================================================== -->
+    <section class="v-slide" id="slide2">
+      <div class="slide-content-wrap">
+        <div class="section-eyebrow">🚗 Chapter 3 • Midnight Surprise</div>
+        <h2 class="section-title">A Midnight Car Boot Surprise! 🚗✨</h2>
+        <p class="section-sub">Kyuki kuch celebrations sirf baaton se nahi, ek grand surprise se shuru hone chahiye! 🎈🚘</p>
+
+        <div class="video-card-container">
+          <video class="video-element" id="mainVideo" poster="car_boot_surprise.jpg" playsinline preload="auto">
+            <source src="birthday_surprise.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+
+          <!-- Glowing Center Play Overlay -->
+          <div class="video-overlay-play-btn" id="videoPlayOverlay">
+            <div class="play-circle-glow">
+              <div class="play-icon-triangle"></div>
+            </div>
+            <div class="play-overlay-text">Tap to Open &amp; Play Surprise 🎁</div>
+          </div>
+
+          <!-- Video controls bar -->
+          <div class="video-controls-bar">
+            <button class="vid-hud-btn" id="soundBtn">🔊 Sound</button>
+            <button class="vid-hud-btn" id="replayBtn">↺ Replay</button>
+          </div>
+        </div>
+
+        <!-- Story Bridge after Car Video -->
+        <div class="story-bridge-box">
+          <div class="bridge-tag">🌟 Next Story Chapter</div>
+          <p class="bridge-text">
+            Cake cut ho gaya, birthday wish ho gaya, aur midnight car surprise bhi dekh liya! 🚗🎉<br>
+            <strong>Lekin birthday tab tak poora nahi hota jab tak aap taaron se apne dil ki sabse pyari wish na maang lo!</strong>
+          </p>
+          <button class="btn-step-next" id="btnNext2">
+            <span>Chapter 4: Chalo, Taare Se Wish Maangein 🌟✨</span>
+            <span>↓</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SLIDE 3: CHAPTER 4 • REAL AI NIGHT SKY, WISHING STAR & HUGE CLOUD DROP
+         ======================================================== -->
+    <section class="v-slide" id="slide3">
+      <div class="slide-content-wrap">
+        <div class="section-eyebrow">🌟 Chapter 4 • Celestial Wish &amp; Badal Ka Paighaam</div>
+        <h2 class="section-title">Taare Se Wish &amp; Badal Ka Paighaam ✨</h2>
+        <p class="section-sub">Ek jaadui raat, chamakta chaand aur taaron ki roshni... Yahan apni sabse pyari wish maangiye jo sitaron tak jayegi, aur dekhiye badal se kya anmol paighaam girta hai!</p>
+
+        <!-- The Immersive AI Night Sky Chamber -->
+        <div class="night-sky-chamber">
+          <div class="sky-scrim-overlay"></div>
+
+          <!-- The Radiant Wishing Star in the Sky -->
+          <div class="wishing-star-target" id="wishingStarTarget">
+            <div class="star-core" id="wishingStarCore"></div>
+            <div class="wishing-star-label">✦ Wishing Star ✦</div>
+          </div>
+
+          <!-- Drifting Clouds in Atmosphere -->
+          <svg class="drift-cloud-layer drift-cloud-l" width="160" height="75" viewBox="0 0 160 75" fill="#bae6fd">
+            <path d="M 25 60 A 25 25 0 0 1 65 35 A 35 35 0 0 1 125 40 A 22 22 0 0 1 145 60 Z"/>
+          </svg>
+          <svg class="drift-cloud-layer drift-cloud-r" width="180" height="85" viewBox="0 0 180 85" fill="#fbcfe8">
+            <path d="M 30 70 A 28 28 0 0 1 75 42 A 40 40 0 0 1 140 48 A 25 25 0 0 1 165 70 Z"/>
+          </svg>
+
+          <!-- Flying Wish Orb that ascends and merges into star -->
+          <div class="wish-flying-orb" id="wishFlyingOrb"></div>
+
+          <!-- Wish Input Section -->
+          <div class="wish-box-inner" id="wishBoxInner">
+            <div class="wish-callout-pill">✨ Wish Maangiye ✨</div>
+
+            <div class="quick-wish-tags">
+              <button class="wish-chip-btn selected" data-wish="Top Grades &amp; Academic Excellence 📚">Top Grades 📚</button>
+              <button class="wish-chip-btn" data-wish="Vibrant Health &amp; Boundless Energy 💙">Good Health 💙</button>
+              <button class="wish-chip-btn" data-wish="Unstoppable Success &amp; Big Dreams 🚀">Big Dreams 🚀</button>
+              <button class="wish-chip-btn" data-wish="Endless Genuine Smiles &amp; Peace 😊">Endless Smiles 😊</button>
+              <button class="wish-chip-btn" data-wish="Treasured Friendship &amp; Anmol Saath 💎">Anmol Saath 💎</button>
+            </div>
+
+            <div class="wish-input-wrap">
+              <input type="text" class="wish-text-field" id="customWishInput" placeholder="Apni sabse pyari wish yahan likhein...">
+              <button class="wish-submit-btn" id="releaseLanternBtn">Sitaron Se Wish Maangein 🌟</button>
+            </div>
+          </div>
+
+          <!-- THE HUGE REALISTIC CLOUD THAT DROPS DOWN (WITH SOUND EFFECT!) -->
+          <div class="mega-cloud-drop-container" id="megaCloudDrop">
+            <div class="sculpted-cloud-card">
+              <div class="cloud-header-pill">☁️ Badal Ka Khaas Paighaam • Shatakshi Ji Ke Liye ☁️</div>
+
+              <!-- EXACT REQUESTED SHAYARI -->
+              <div class="cloud-shayari-content">
+                <div class="s-line">Muskan ka koi mol nahi hota, 😊✨</div>
+                <div class="s-line">Kuch rishton ka tol nahi hota, ⚖️❤️</div>
+                <div class="s-line">Dost to mil jate hai har raste par, 🚶‍♂️🛣️</div>
+                <div class="s-line highlight">Lekin har koi tumhari tarah anmol nahi hota! 💎🌟</div>
+
+                <div class="s-stanza-break"></div>
+
+                <div class="s-line">Rishton se badi chahat kya hogi, 💫💖</div>
+                <div class="s-line">Dosti se badi ibadat kya hogi, 🤲✨</div>
+                <div class="s-line">Jisey dost mil jaaye tum jaisa, 🫂🌸</div>
+                <div class="s-line highlight">Usey zindagi se fir shikayat kya hogi! 😌🕊️</div>
+              </div>
+
+              <div class="cloud-footer-row">
+                <span class="cloud-author">— Always your biggest supporter &amp; best friend 🤝🌟</span>
+                <span class="cloud-hbd">Happy Birthday, Shatakshi Ji! 🎂✨</span>
+              </div>
+
+              <button class="btn-replay-cloud-drop" id="btnReplayCloudDrop">
+                <span>↺ Badal Phir Se Girayein (With Sound 🔔)</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Story Bridge after Wish -->
+        <div class="story-bridge-box">
+          <div class="bridge-tag">📖 Next Story Chapter</div>
+          <p class="bridge-text">
+            Aapki wish sitaron tak pahunch chuki hai aur ye anmol paighaam badal se utar chuka hai! 🌠✨<br>
+            <strong>Wish aur Badal dono ho gaye... Ab aage badhte hain aur hamare 13 August se lekar ab tak ke 4 mast phases ko relive karte hain!</strong>
+          </p>
+          <button class="btn-step-next" id="btnNext3">
+            <span>Chapter 5: 4-Phase Story Dekhein 📖💫</span>
+            <span>↓</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SLIDE 4: CHAPTER 5 • THE 4-PHASE CONNECTION SAFAR
+         ======================================================== -->
+    <section class="v-slide" id="slide4">
+      <div class="slide-content-wrap">
+        <div class="section-eyebrow">📖 Chapter 5 • A 4-Phase Story</div>
+        <h2 class="section-title">13 August se Ab Tak: Hamara Safar 💫</h2>
+        <p class="section-sub">
+          <em>&ldquo;Pata hai, main observe kar raha tha ki 13 August se lekar ab tak humara connection kitne alag aur mast 4 phases se guzra hai...&rdquo;</em>
+        </p>
+
+        <div class="memories-container">
+          <!-- 4 Phase Navigation Tabs -->
+          <div class="phases-stepper">
+            <div class="phase-step-pill active" id="phaseTab0" data-phase="0">
+              <div class="phase-pill-num">Phase 1</div>
+              <div class="phase-pill-title">August • Masti &amp; Spark</div>
+            </div>
+            <div class="phase-step-pill" id="phaseTab1" data-phase="1">
+              <div class="phase-pill-num">Phase 2</div>
+              <div class="phase-pill-title">Early Sept • Focus &amp; IIT</div>
+            </div>
+            <div class="phase-step-pill" id="phaseTab2" data-phase="2">
+              <div class="phase-pill-num">Phase 3</div>
+              <div class="phase-pill-title">Mid Sept • Care &amp; Support</div>
+            </div>
+            <div class="phase-step-pill" id="phaseTab3" data-phase="3">
+              <div class="phase-pill-num">Phase 4</div>
+              <div class="phase-pill-title">Oct - Nov • Partnership</div>
+            </div>
+          </div>
+
+          <!-- Active Phase Card Display -->
+          <div class="phase-card-display" id="phaseCardDisplay">
+            <div class="phase-card-header">
+              <span class="phase-badge" id="phaseBadge">Phase 1 of 4</span>
+              <span class="phase-time" id="phaseTime">13 Aug - 20 Aug</span>
+            </div>
+            <h3 class="phase-heading" id="phaseHeading">August: Masti, Flirting &amp; Wo Spark Wala Phase ✨</h3>
+            <p class="phase-body-text" id="phaseBody">
+              13 August ko hamari pehli baat shuru hui, 16 August ko mera birthday aaya, aur 20 August se regular padhai shuru hui. Hamara <strong>pure masti, flirting aur wo spark wala phase</strong>, jahan se sab casually aur bohot naturally shuru hua! Bina kisi formality ke ek mast vibe set ho gayi thi.
+            </p>
+            <div class="memory-advance-row">
+              <button class="btn-mem-next" id="btnNextPhase">Read Next Phase →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Story Bridge after Memories -->
+        <div class="story-bridge-box">
+          <div class="bridge-tag">🎉 Final Story Chapter</div>
+          <p class="bridge-text">
+            <em>&ldquo;Maine notice kiya ki har mod par ek alag tarah ka bond strong hua hai, isliye lag raha tha ye share karun!&rdquo;</em><br>
+            <strong>Aur ab hum aagaye hain is kahani ke sabse grand aur aakhiri pighlaav par!</strong>
+          </p>
+          <button class="btn-step-next" id="btnNext4">
+            <span>Chapter 6: Grand Finale &amp; Celebration 🎉✨</span>
+            <span>↓</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SLIDE 5: CHAPTER 6 • GRAND FINALE & DANCING TEDDY BEAR
+         ======================================================== -->
+    <section class="v-slide" id="slide5">
+      <div class="slide-content-wrap">
+        <span class="celeb-emoji-big">🎊</span>
+
+        <h2 class="celeb-title">Happy Birthday,<br>Shatakshi Ji! 🎂</h2>
+        <p class="celeb-script">Ek Baar Phir Se… Bahut Bahut Mubarak Ho! ✨</p>
+
+        <!-- Cute Dancing Teddy Bear Companion -->
+        <div class="teddy-companion" id="teddyCompanion">
+          <div class="teddy-speech-bubble">Happy Birthday Shatakshi Ji! 🎈</div>
+          <svg class="teddy-svg" viewBox="0 0 120 140" width="105" height="125">
+            <!-- Party Hat -->
+            <polygon points="60,6 46,36 74,36" fill="#fbbf24" stroke="#f59e0b" stroke-width="2"/>
+            <circle cx="60" cy="6" r="4.5" fill="#fb7185"/>
+            <line x1="52" y1="21" x2="68" y2="21" stroke="#38bdf8" stroke-width="2.2"/>
+
+            <!-- Ears -->
+            <circle class="teddy-ear-l" cx="34" cy="40" r="14" fill="#b45309"/>
+            <circle cx="34" cy="40" r="8" fill="#fde68a"/>
+            <circle class="teddy-ear-r" cx="86" cy="40" r="14" fill="#b45309"/>
+            <circle cx="86" cy="40" r="8" fill="#fde68a"/>
+
+            <!-- Head -->
+            <ellipse cx="60" cy="56" rx="28" ry="24" fill="#d97706"/>
+
+            <!-- Snout & Nose -->
+            <ellipse cx="60" cy="62" rx="14" ry="10" fill="#fef08a"/>
+            <ellipse cx="60" cy="57" rx="5" ry="3.5" fill="#451a03"/>
+            <path d="M 55 64 Q 60 69 65 64" stroke="#451a03" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+            <!-- Eyes -->
+            <circle cx="48" cy="50" r="3.5" fill="#1e1b4b"/>
+            <circle cx="47" cy="49" r="1.2" fill="#fff"/>
+            <circle cx="72" cy="50" r="3.5" fill="#1e1b4b"/>
+            <circle cx="71" cy="49" r="1.2" fill="#fff"/>
+
+            <!-- Blushing cheeks -->
+            <ellipse cx="40" cy="58" rx="4" ry="2.5" fill="#fb7185" opacity="0.75"/>
+            <ellipse cx="80" cy="58" rx="4" ry="2.5" fill="#fb7185" opacity="0.75"/>
+
+            <!-- Body -->
+            <ellipse cx="60" cy="95" rx="24" ry="26" fill="#d97706"/>
+            <ellipse cx="60" cy="96" rx="15" ry="18" fill="#fef08a"/>
+
+            <!-- Arms -->
+            <ellipse class="teddy-arm-l" cx="30" cy="88" rx="8" ry="16" fill="#b45309" transform="rotate(25 30 88)"/>
+            <ellipse class="teddy-arm-r" cx="90" cy="88" rx="8" ry="16" fill="#b45309" transform="rotate(-25 90 88)"/>
+
+            <!-- Feet -->
+            <ellipse cx="44" cy="122" rx="10" ry="8" fill="#b45309"/>
+            <circle cx="44" cy="122" r="5" fill="#fde68a"/>
+            <ellipse cx="76" cy="122" rx="10" ry="8" fill="#b45309"/>
+            <circle cx="76" cy="122" r="5" fill="#fde68a"/>
+          </svg>
+        </div>
+
+        <div class="celeb-grid">
+          <div class="celeb-card">
+            <span class="c-icon">🌟</span>
+            <span class="c-label">Top scores &amp; endless success</span>
+          </div>
+          <div class="celeb-card">
+            <span class="c-icon">💙</span>
+            <span class="c-label">Vibrant health &amp; peaceful vibes</span>
+          </div>
+          <div class="celeb-card">
+            <span class="c-icon">🚀</span>
+            <span class="c-label">Unstoppable milestones &amp; dreams</span>
+          </div>
+          <div class="celeb-card">
+            <span class="c-icon">😊</span>
+            <span class="c-label">Endless smiles every single day</span>
+          </div>
+        </div>
+
+        <button class="fireworks-trigger-btn" id="fireworksBtn">
+          🎆 Trigger Grand Fireworks!
+        </button>
+
+        <p class="milte-hain">Milte Hain Aage… 🤝✨</p>
+        <p class="milte-sub">In-person treat &amp; celebration pending hai — officially recorded! 🍕☕</p>
+
+        <button class="btn-step-next" id="btnReplay" style="margin-top: 24px; padding: 12px 32px; font-size: 0.95rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(251,191,36,0.4); color: #fef08a;">
+          <span>↺ Relive the Story from Chapter 1</span>
+        </button>
+
+        <p class="footer-sig">✦ 16 November &nbsp;•&nbsp; A Celebration of an Amazing Friend ✦</p>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ============================================================
+     JAVASCRIPT: CELEBRATION ENGINE, AUDIO & INTERACTION
+     ============================================================ -->
+<script>
+(function() {
+  'use strict';
+
+  /* ----------------------------------------------------------------
+     1. CONTINUOUS CELEBRATION CANVAS (Balloons + Confetti + Stars)
+  ---------------------------------------------------------------- */
+  const canvas = document.getElementById('celebCanvas');
+  const ctx = canvas.getContext('2d');
+  let W = window.innerWidth, H = window.innerHeight;
+
+  function resizeCanvas() {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W;
+    canvas.height = H;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  const balloons = [];
+  const balloonColors = [
+    { base: '#f59e0b', highlight: '#fef08a' },
+    { base: '#38bdf8', highlight: '#bae6fd' },
+    { base: '#c084fc', highlight: '#f3e8ff' },
+    { base: '#fb7185', highlight: '#ffe4e6' },
+    { base: '#34d399', highlight: '#d1fae5' }
+  ];
+
+  class Balloon {
+    constructor(init = false) {
+      this.reset(init);
+    }
+    reset(init = false) {
+      this.x = Math.random() * W;
+      this.y = init ? Math.random() * H : H + 120 + Math.random() * 80;
+      this.vy = -(Math.random() * 1.2 + 0.6);
+      this.swaySpeed = Math.random() * 0.02 + 0.01;
+      this.swayAmp = Math.random() * 25 + 15;
+      this.swayOffset = Math.random() * Math.PI * 2;
+      this.rx = Math.random() * 8 + 18;
+      this.ry = this.rx * 1.25;
+      this.color = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+      this.alpha = Math.random() * 0.45 + 0.35;
+    }
+    update() {
+      this.y += this.vy;
+      this.swayOffset += this.swaySpeed;
+      if (this.y < -120) this.reset();
+    }
+    draw() {
+      const currentX = this.x + Math.sin(this.swayOffset) * this.swayAmp;
+      ctx.save();
+      ctx.globalAlpha = this.alpha;
+
+      const grad = ctx.createRadialGradient(
+        currentX - this.rx * 0.3, this.y - this.ry * 0.3, this.rx * 0.1,
+        currentX, this.y, this.ry
+      );
+      grad.addColorStop(0, this.color.highlight);
+      grad.addColorStop(0.7, this.color.base);
+      grad.addColorStop(1, '#0f172a');
+
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.ellipse(currentX, this.y, this.rx, this.ry, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = this.color.base;
+      ctx.beginPath();
+      ctx.moveTo(currentX - 3, this.y + this.ry);
+      ctx.lineTo(currentX + 3, this.y + this.ry);
+      ctx.lineTo(currentX, this.y + this.ry + 5);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(currentX, this.y + this.ry + 5);
+      ctx.bezierCurveTo(
+        currentX - 6, this.y + this.ry + 20,
+        currentX + 6, this.y + this.ry + 35,
+        currentX, this.y + this.ry + 50
+      );
+      ctx.stroke();
+
+      ctx.restore();
+    }
+  }
+
+  for (let i = 0; i < 16; i++) balloons.push(new Balloon(true));
+
+  const confetti = [];
+  class ConfettiParticle {
+    constructor(init = false) { this.reset(init); }
+    reset(init = false) {
+      this.x = Math.random() * W;
+      this.y = init ? Math.random() * H : -20;
+      this.vy = Math.random() * 2 + 1;
+      this.vx = (Math.random() - 0.5) * 0.8;
+      this.sz = Math.random() * 6 + 3;
+      this.a  = Math.random() * 0.65 + 0.35;
+      this.r  = Math.random() * Math.PI * 2;
+      this.rv = (Math.random() - 0.5) * 0.12;
+      this.shape = Math.floor(Math.random() * 3);
+      this.color = ['#fbbf24', '#f59e0b', '#c084fc', '#38bdf8', '#fb7185', '#34d399'][Math.floor(Math.random() * 6)];
+    }
+    update() {
+      this.y += this.vy;
+      this.x += this.vx;
+      this.r += this.rv;
+      if (this.y > H + 30) this.reset();
+    }
+    draw() {
+      ctx.save();
+      ctx.globalAlpha = this.a;
+      ctx.fillStyle = this.color;
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.r);
+      if (this.shape === 0) {
+        ctx.beginPath(); ctx.arc(0, 0, this.sz * 0.5, 0, Math.PI * 2); ctx.fill();
+      } else if (this.shape === 1) {
+        ctx.fillRect(-this.sz / 2, -this.sz / 2, this.sz, this.sz);
+      } else {
+        ctx.fillRect(-this.sz / 4, -this.sz * 1.4, this.sz / 2, this.sz * 2.8);
+      }
+      ctx.restore();
+    }
+  }
+
+  for (let i = 0; i < 65; i++) confetti.push(new ConfettiParticle(true));
+
+  const stars = [];
+  class AmbientStar {
+    constructor() {
+      this.x = Math.random() * W;
+      this.y = Math.random() * H;
+      this.s = Math.random() * 1.8 + 0.3;
+      this.a = Math.random() * 0.5 + 0.15;
+      this.tw = Math.random() * Math.PI * 2;
+      this.twV = 0.015 + Math.random() * 0.02;
+    }
+    tick() {
+      this.tw += this.twV;
+      const alpha = this.a * (0.6 + 0.4 * Math.sin(this.tw));
+      ctx.fillStyle = `rgba(255, 255, 255, ${alpha.toFixed(2)})`;
+      ctx.fillRect(this.x, this.y, this.s, this.s);
+    }
+  }
+  for (let i = 0; i < 80; i++) stars.push(new AmbientStar());
+
+  const fw = [];
+  class FWP {
+    constructor(x, y, color, sp) {
+      this.x = x; this.y = y;
+      const a = Math.random() * Math.PI * 2;
+      const v = (sp || 1) * (Math.random() * 12 + 4);
+      this.vx = Math.cos(a) * v;
+      this.vy = Math.sin(a) * v;
+      this.alpha = 1;
+      this.color = color;
+      this.decay = Math.random() * 0.018 + 0.01;
+      this.sz = Math.random() * 4.5 + 2;
+    }
+    tick() {
+      this.vx *= 0.96; this.vy *= 0.96; this.vy += 0.14;
+      this.x += this.vx; this.y += this.vy;
+      this.alpha -= this.decay;
+      if (this.alpha <= 0) return false;
+      ctx.save();
+      ctx.globalAlpha = this.alpha;
+      ctx.fillStyle = this.color;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = this.color;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.sz, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+      return true;
+    }
+  }
+
+  function spawnFW(x, y, n, sp) {
+    const colors = ['#38bdf8', '#c084fc', '#fbbf24', '#fb7185', '#fff', '#34d399', '#f97316'];
+    for (let i = 0; i < (n || 100); i++) {
+      fw.push(new FWP(x, y, colors[Math.floor(Math.random() * colors.length)], sp));
+    }
+  }
+
+  function grandFireworks() {
+    const cx = W / 2, cy = H * 0.4;
+    spawnFW(cx, cy, 140, 1.25);
+    setTimeout(() => spawnFW(cx - W * 0.25, cy - 40, 95, 1.05), 220);
+    setTimeout(() => spawnFW(cx + W * 0.25, cy - 40, 95, 1.05), 380);
+    setTimeout(() => spawnFW(cx, cy + 100, 85, 0.95), 600);
+    setTimeout(() => spawnFW(cx - W * 0.35, cy + 50, 65, 0.85), 950);
+    setTimeout(() => spawnFW(cx + W * 0.35, cy + 50, 65, 0.85), 1150);
+  }
+
+  function renderLoop() {
+    ctx.clearRect(0, 0, W, H);
+    stars.forEach(s => s.tick());
+    balloons.forEach(b => { b.update(); b.draw(); });
+    confetti.forEach(c => { c.update(); c.draw(); });
+    for (let i = fw.length - 1; i >= 0; i--) {
+      if (!fw[i].tick()) fw.splice(i, 1);
+    }
+    requestAnimationFrame(renderLoop);
+  }
+  renderLoop();
+
+  /* ----------------------------------------------------------------
+     2. MAGIC CURSOR PARTICLES
+  ---------------------------------------------------------------- */
+  const magicCanvas = document.getElementById('magicCursorCanvas');
+  const magicCtx = magicCanvas.getContext('2d');
+  const spotlight = document.getElementById('cursorSpotlight');
+
+  function resizeMagicCanvas() {
+    magicCanvas.width = window.innerWidth;
+    magicCanvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeMagicCanvas);
+  resizeMagicCanvas();
+
+  const magicParticles = [];
+  class MagicParticle {
+    constructor(x, y) {
+      this.x = x; this.y = y;
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 2 + 0.5;
+      this.vx = Math.cos(angle) * speed;
+      this.vy = Math.sin(angle) * speed + 0.4;
+      this.alpha = 1;
+      this.size = Math.random() * 3 + 1.5;
+      this.decay = Math.random() * 0.025 + 0.02;
+      this.color = ['#fbbf24', '#38bdf8', '#c084fc', '#fff', '#fde047'][Math.floor(Math.random() * 5)];
+    }
+    update() {
+      this.x += this.vx; this.y += this.vy;
+      this.alpha -= this.decay;
+    }
+    draw() {
+      magicCtx.save();
+      magicCtx.globalAlpha = Math.max(0, this.alpha);
+      magicCtx.fillStyle = this.color;
+      magicCtx.beginPath();
+      magicCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      magicCtx.fill();
+      magicCtx.restore();
+    }
+  }
+
+  function addMagicPointer(x, y) {
+    spotlight.style.left = x + 'px';
+    spotlight.style.top = y + 'px';
+    for (let i = 0; i < 2; i++) magicParticles.push(new MagicParticle(x, y));
+  }
+  window.addEventListener('mousemove', e => addMagicPointer(e.clientX, e.clientY));
+  window.addEventListener('touchmove', e => {
+    if (e.touches && e.touches[0]) addMagicPointer(e.touches[0].clientX, e.touches[0].clientY);
+  });
+
+  function magicLoop() {
+    magicCtx.clearRect(0, 0, magicCanvas.width, magicCanvas.height);
+    for (let i = magicParticles.length - 1; i >= 0; i--) {
+      const p = magicParticles[i];
+      p.update();
+      p.draw();
+      if (p.alpha <= 0) magicParticles.splice(i, 1);
+    }
+    requestAnimationFrame(magicLoop);
+  }
+  magicLoop();
+
+  /* ----------------------------------------------------------------
+     3. SEQUENTIAL STORY ENGINE (6 CHAPTERS: 0 to 5)
+  ---------------------------------------------------------------- */
+  let currentStep = 0;
+  let maxUnlockedStep = 0;
+  const TOTAL_STEPS = 6;
+
+  const slidesTrack = document.getElementById('slidesTrack');
+  const toastMsg = document.getElementById('toastMsg');
+  const stepPills = [0, 1, 2, 3, 4, 5].map(i => document.getElementById('stepPill' + i));
+  const mainVideo = document.getElementById('mainVideo');
+  const videoPlayOverlay = document.getElementById('videoPlayOverlay');
+
+  function showToast(text) {
+    toastMsg.textContent = text;
+    toastMsg.classList.add('show');
+    setTimeout(() => toastMsg.classList.remove('show'), 2600);
+  }
+
+  function updateStepsUI() {
+    stepPills.forEach((pill, idx) => {
+      pill.classList.toggle('active', idx === currentStep);
+      pill.classList.toggle('completed', idx < currentStep);
+      pill.classList.toggle('locked', idx > maxUnlockedStep);
+    });
+
+    // Pause video when leaving slide 2 (Chapter 3)
+    if (currentStep !== 2 && mainVideo) {
+      mainVideo.pause();
+    }
+
+    // Finale trigger on slide 5
+    if (currentStep === 5) {
+      setTimeout(grandFireworks, 600);
+    }
+  }
+
+  function goToStep(targetStep) {
+    if (targetStep < 0 || targetStep >= TOTAL_STEPS) return;
+
+    if (targetStep > maxUnlockedStep) {
+      showToast(`Pehle Chapter ${maxUnlockedStep + 1} complete kijiye! ✨`);
+      stepPills[targetStep].style.transform = 'translateX(6px)';
+      setTimeout(() => stepPills[targetStep].style.transform = '', 200);
+      return;
+    }
+
+    currentStep = targetStep;
+    slidesTrack.style.transform = `translateY(-${currentStep * 100}vh)`;
+
+    // CRITICAL: Always reset the opened slide to the very TOP!
+    const targetSlide = document.getElementById('slide' + currentStep);
+    if (targetSlide) {
+      targetSlide.scrollTop = 0;
+    }
+
+    updateStepsUI();
+  }
+
+  function advanceToNext() {
+    if (currentStep < TOTAL_STEPS - 1) {
+      const nextStep = currentStep + 1;
+      if (nextStep > maxUnlockedStep) {
+        maxUnlockedStep = nextStep;
+      }
+      goToStep(nextStep);
+    }
+  }
+
+  stepPills.forEach((pill, idx) => {
+    pill.addEventListener('click', () => {
+      goToStep(idx);
+    });
+  });
+
+  document.getElementById('btnNext0').addEventListener('click', advanceToNext);
+  document.getElementById('btnNext1').addEventListener('click', advanceToNext);
+  document.getElementById('btnNext2').addEventListener('click', advanceToNext);
+  document.getElementById('btnNext3').addEventListener('click', advanceToNext);
+  document.getElementById('btnNext4').addEventListener('click', advanceToNext);
+  document.getElementById('btnReplay').addEventListener('click', () => {
+    goToStep(0);
+  });
+
+  window.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === 'ArrowRight' || e.key === ' ') {
+      advanceToNext();
+    } else if (e.key === 'ArrowUp' || e.key === 'PageUp' || e.key === 'ArrowLeft') {
+      if (currentStep > 0) goToStep(currentStep - 1);
+    }
+  });
+
+  /* ----------------------------------------------------------------
+     4. REAL HAPPY BIRTHDAY AUDIO SONG INTEGRATION
+  ---------------------------------------------------------------- */
+  const realBdayAudio = document.getElementById('realBdayAudio');
+  const musicBtn = document.getElementById('musicToggleBtn');
+  const musicBtnLabel = document.getElementById('musicBtnLabel');
+  let audioStarted = false;
+
+  function tryPlayMusic() {
+    if (!audioStarted) {
+      realBdayAudio.volume = 0.7;
+      realBdayAudio.play().then(() => {
+        audioStarted = true;
+        musicBtn.classList.add('playing');
+        musicBtnLabel.textContent = 'Playing 🎵';
+      }).catch(() => {
+        // Autoplay policy fallback: wait for user action
+      });
+    }
+  }
+
+  // Play on first user click anywhere on page
+  window.addEventListener('click', () => {
+    if (!audioStarted) tryPlayMusic();
+  }, { once: true });
+
+  musicBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    if (realBdayAudio.paused) {
+      realBdayAudio.play().then(() => {
+        audioStarted = true;
+        musicBtn.classList.add('playing');
+        musicBtnLabel.textContent = 'Playing 🎵';
+      });
+    } else {
+      realBdayAudio.pause();
+      musicBtn.classList.remove('playing');
+      musicBtnLabel.textContent = 'Birthday Music';
+    }
+  });
+
+  /* ----------------------------------------------------------------
+     5. CAKE CUTTING & POPPING WISH LETTER (RIGHT IN CENTER OF CAKE!)
+  ---------------------------------------------------------------- */
+  const cakeScene  = document.getElementById('cakeScene');
+  const knifeEl    = document.getElementById('knifeEl');
+  const unfoldedWishStage = document.getElementById('unfoldedWishStage');
+  const cutFlash   = document.getElementById('cutFlash');
+  const tapHint    = document.getElementById('cakeTapHint');
+  const relightBtn = document.getElementById('relightBtn');
+  const flames  = [0, 1, 2, 3].map(i => document.getElementById('fl' + i));
+  const smokes  = [0, 1, 2, 3].map(i => document.getElementById('sm' + i));
+  let isCut = false;
+
+  function cutCake() {
+    if (isCut) return;
+    isCut = true;
+    tryPlayMusic();
+
+    // Knife swing
+    knifeEl.classList.add('swinging');
+    setTimeout(() => cutFlash.classList.add('active'), 380);
+
+    // Flames blow out + smoke puff
+    setTimeout(() => {
+      flames.forEach((f, i) => {
+        setTimeout(() => {
+          if (f) f.classList.add('out');
+          const sm = smokes[i];
+          if (sm) {
+            sm.classList.add('puffing');
+            setTimeout(() => sm.classList.remove('puffing'), 1400);
+          }
+        }, i * 80);
+      });
+    }, 550);
+
+    // Cake halves split left and right!
+    setTimeout(() => {
+      cakeScene.classList.add('cut-split');
+      tapHint.style.display = 'none';
+    }, 700);
+
+    // Wish Letter pops right in the center where the cake was cut!
+    setTimeout(() => {
+      unfoldedWishStage.classList.add('revealed');
+    }, 900);
+
+    // Sparkles & Fireworks burst over the cut cake
+    setTimeout(() => {
+      const rect = cakeScene.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height * 0.45;
+      spawnFW(cx, cy, 140, 1.25);
+      setTimeout(() => spawnFW(cx - 100, cy - 30, 85, 0.95), 200);
+      setTimeout(() => spawnFW(cx + 100, cy - 30, 85, 0.95), 370);
+    }, 850);
+
+    setTimeout(() => relightBtn.classList.add('show'), 1600);
+  }
+
+  function resetCake() {
+    isCut = false;
+    knifeEl.classList.remove('swinging');
+    cutFlash.classList.remove('active');
+    cakeScene.classList.remove('cut-split');
+    unfoldedWishStage.classList.remove('revealed');
+    relightBtn.classList.remove('show');
+    tapHint.style.display = '';
+    flames.forEach(f => { if (f) f.classList.remove('out'); });
+    smokes.forEach(s => {
+      if (s) {
+        s.classList.remove('puffing');
+        void s.offsetWidth;
+      }
+    });
+  }
+
+  cakeScene.addEventListener('click', e => {
+    if (e.target === relightBtn || relightBtn.contains(e.target)) return;
+    if (!isCut) cutCake();
+  });
+  relightBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    resetCake();
+  });
+
+  /* ----------------------------------------------------------------
+     6. VIDEO PLAY OVERLAY INTERACTION
+  ---------------------------------------------------------------- */
+  const soundBtn = document.getElementById('soundBtn');
+
+  function playVideoWithSound() {
+    videoPlayOverlay.classList.add('hidden');
+    // Pause background song while video plays so sounds don't overlap
+    if (!realBdayAudio.paused) {
+      realBdayAudio.pause();
+      musicBtn.classList.remove('playing');
+    }
+    mainVideo.muted = false;
+    mainVideo.play().catch(() => {
+      mainVideo.muted = true;
+      mainVideo.play();
+    });
+    soundBtn.textContent = mainVideo.muted ? '🔇 Muted' : '🔊 Sound';
+  }
+
+  videoPlayOverlay.addEventListener('click', playVideoWithSound);
+
+  mainVideo.addEventListener('click', () => {
+    if (mainVideo.paused) {
+      playVideoWithSound();
+    } else {
+      mainVideo.pause();
+    }
+  });
+
+  document.getElementById('replayBtn').addEventListener('click', () => {
+    mainVideo.currentTime = 0;
+    playVideoWithSound();
+  });
+
+  soundBtn.addEventListener('click', () => {
+    mainVideo.muted = !mainVideo.muted;
+    soundBtn.textContent = mainVideo.muted ? '🔇 Muted' : '🔊 Sound';
+  });
+
+  /* ----------------------------------------------------------------
+     7. SOUND EFFECT FOR CLOUD DROP (WHOOSH + CELESTIAL CHIME BOOM)
+  ---------------------------------------------------------------- */
+  function playCloudDropSound() {
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      const actx = new AC();
+      if (actx.state === 'suspended') actx.resume();
+
+      // 1. Deep atmospheric low whoosh
+      const now = actx.currentTime;
+      const oscLow = actx.createOscillator();
+      const gainLow = actx.createGain();
+      oscLow.type = 'triangle';
+      oscLow.frequency.setValueAtTime(140, now);
+      oscLow.frequency.exponentialRampToValueAtTime(55, now + 0.6);
+      gainLow.gain.setValueAtTime(0.18, now);
+      gainLow.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
+      oscLow.connect(gainLow);
+      gainLow.connect(actx.destination);
+      oscLow.start(now);
+      oscLow.stop(now + 0.9);
+
+      // 2. Crystal chord chime when cloud lands
+      const freqs = [523.25, 659.25, 783.99, 1046.50, 1318.51, 1568.00]; // C5, E5, G5, C6, E6, G6
+      freqs.forEach((f, i) => {
+        const osc = actx.createOscillator();
+        const gain = actx.createGain();
+        const startT = now + 0.25 + i * 0.07;
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(f, startT);
+        gain.gain.setValueAtTime(0.08, startT);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startT + 1.4);
+        osc.connect(gain);
+        gain.connect(actx.destination);
+        osc.start(startT);
+        osc.stop(startT + 1.45);
+      });
+    } catch(e) {}
+  }
+
+  /* ----------------------------------------------------------------
+     8. CHAPTER 4: WISH MERGING INTO STAR & HUGE CLOUD DROP
+  ---------------------------------------------------------------- */
+  const releaseBtn = document.getElementById('releaseLanternBtn');
+  const customWishInput = document.getElementById('customWishInput');
+  const wishChips = document.querySelectorAll('.wish-chip-btn');
+  const wishFlyingOrb = document.getElementById('wishFlyingOrb');
+  const wishingStarCore = document.getElementById('wishingStarCore');
+  const megaCloudDrop = document.getElementById('megaCloudDrop');
+  const btnReplayCloudDrop = document.getElementById('btnReplayCloudDrop');
+  let selectedWishText = "Top Grades & Academic Excellence 📚";
+
+  wishChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      wishChips.forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      selectedWishText = chip.getAttribute('data-wish');
+      customWishInput.value = selectedWishText;
+    });
+  });
+
+  function executeWishAndCloudDrop() {
+    const wish = customWishInput.value.trim() || selectedWishText;
+    showToast(`🌟 Wish Sending to Star: "${wish}"...`);
+
+    // 1. Wish orb flies upwards towards the Wishing Star
+    wishFlyingOrb.className = 'wish-flying-orb launching';
+
+    // 2. Reaches the star and merges into it!
+    setTimeout(() => {
+      wishFlyingOrb.classList.add('merged');
+      // Wishing star super-radiates & bursts
+      wishingStarCore.style.transform = 'scale(2.4)';
+      wishingStarCore.style.boxShadow = '0 0 50px 25px #fff, 0 0 90px 45px #fbbf24, 0 0 140px 70px #38bdf8';
+      spawnFW(W / 2, H * 0.2, 110, 1.25);
+      showToast('✨ Wish Merged into the Star! Ab Badal Aane Wala Hai...');
+    }, 1600);
+
+    // 3. Reset star shine after burst
+    setTimeout(() => {
+      wishingStarCore.style.transform = '';
+      wishingStarCore.style.boxShadow = '';
+    }, 2800);
+
+    // 4. HUGE CLOUD DROPS DOWN WITH SOUND!
+    setTimeout(() => {
+      megaCloudDrop.classList.remove('revealed');
+      void megaCloudDrop.offsetWidth; // Reflow
+      megaCloudDrop.classList.add('revealed');
+      playCloudDropSound();
+      spawnFW(W / 2, H * 0.45, 95, 1.1);
+    }, 2200);
+  }
+
+  releaseBtn.addEventListener('click', executeWishAndCloudDrop);
+
+  btnReplayCloudDrop.addEventListener('click', () => {
+    executeWishAndCloudDrop();
+  });
+
+  /* ----------------------------------------------------------------
+     9. CHAPTER 5: THE 4-PHASE CONNECTION SAFAR (CONFIDENT & LIGHT TONE)
+  ---------------------------------------------------------------- */
+  const memoryPhases = [
+    {
+      num: 'Phase 1 of 4',
+      time: '13 Aug - 20 Aug',
+      heading: 'August: Masti, Flirting & Wo Spark Wala Phase ✨',
+      body: '13 August ko hamari pehli baat shuru hui, 16 August ko mera birthday aaya, aur 20 August se regular padhai shuru hui. Hamara <strong>pure masti, flirting aur wo spark wala phase</strong>, jahan se sab casually aur bohot naturally shuru hua! Bina kisi formality ke ek mast vibe set ho gayi thi.'
+    },
+    {
+      num: 'Phase 2 of 4',
+      time: 'Early Sept (12-13 Sept Exams)',
+      heading: 'Early September: Focus, IIT First Sem & NotebookLM 📚',
+      body: 'Focus aur grind wala phase! 12-13 September ko IIT first semester ke exams the, aur hum dono ne saath baith kar <strong>NotebookLM se first sem ke liye solid mehnat ki</strong>. Late night discussions, tough concepts solve karna aur ek dusre ko focus mein rakhna — yeh phase pure hustle aur true teamwork ka tha!'
+    },
+    {
+      num: 'Phase 3 of 4',
+      time: 'Mid Sept (19 Sept onwards)',
+      heading: 'Mid September: Care & Genuine Support 💙',
+      body: 'Care wala phase. 19 September ke aas-paas jab aapki tabiyat thodi upset thi, mujhe bas ye lagta tha ki <strong>aap bina kisi stress ke jaldi theek ho jao</strong>. Yahan koi drama nahi tha, bas ek genuine concern aur ek dusre ke liye hamesha supportive rehne wali clean understanding thi.'
+    },
+    {
+      num: 'Phase 4 of 4',
+      time: 'October - November',
+      heading: 'Oct - Nov: Exam Stress-Buster & Solid Partnership 🤝',
+      body: 'Exam aur stress-buster wala phase! 15-16 October ke papers, fir Diwali, kaam aur padhai ka balance. Jahan bina kisi drama ke ek <strong>solid partnership aur understanding</strong> ban gayi hai — jahan bina bole samajh jaate hain ki kab serious rehna hai aur kab chill karna hai. Har mod par bond aur strong hua hai!'
+    }
+  ];
+
+  let currentPhaseIdx = 0;
+  const phaseTabs = [0, 1, 2, 3].map(i => document.getElementById('phaseTab' + i));
+  const phaseBadge = document.getElementById('phaseBadge');
+  const phaseTime = document.getElementById('phaseTime');
+  const phaseHeading = document.getElementById('phaseHeading');
+  const phaseBody = document.getElementById('phaseBody');
+  const btnNextPhase = document.getElementById('btnNextPhase');
+
+  function renderPhase(idx) {
+    currentPhaseIdx = idx;
+    phaseTabs.forEach((tab, i) => {
+      tab.classList.toggle('active', i === idx);
+      tab.classList.toggle('completed', i < idx);
+    });
+    const p = memoryPhases[idx];
+    phaseBadge.textContent = p.num;
+    phaseTime.textContent = p.time;
+    phaseHeading.textContent = p.heading;
+    phaseBody.innerHTML = p.body;
+
+    if (idx === memoryPhases.length - 1) {
+      btnNextPhase.textContent = 'All 4 Phases Completed! ✨';
+    } else {
+      btnNextPhase.textContent = 'Read Next Phase →';
+    }
+  }
+
+  phaseTabs.forEach((tab, idx) => {
+    tab.addEventListener('click', () => renderPhase(idx));
+  });
+
+  btnNextPhase.addEventListener('click', () => {
+    if (currentPhaseIdx < memoryPhases.length - 1) {
+      renderPhase(currentPhaseIdx + 1);
+    } else {
+      renderPhase(0);
+    }
+  });
+
+  /* ----------------------------------------------------------------
+     10. CHAPTER 6: GRAND FIREWORKS BUTTON
+  ---------------------------------------------------------------- */
+  document.getElementById('fireworksBtn').addEventListener('click', () => {
+    grandFireworks();
+    showToast('🎆 Happy Birthday Shatakshi Ji! 🎂✨');
+  });
+
+})();
+</script>
+
+</body>
+</html>
