@@ -46,3 +46,4 @@ Simply open `index.html` in any modern web browser:
 # On Windows
 start index.html
 ```
+
