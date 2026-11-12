@@ -943,6 +943,18 @@
       margin: 10px 0 15px;
     }
 
+    /* Subtle Mountain Horizon Silhouette at bottom of night-sky-chamber */
+    .mountain-horizon-silhouette {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 130px;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.9;
+    }
+
     /* Dark gradient scrim over AI background for crisp UI contrast */
     .sky-scrim-overlay {
       position: absolute;
@@ -1684,7 +1696,7 @@
         </div>
 
         <h1 class="hero-title">Happy Birthday,<br>Shatakshi Ji! 🎂</h1>
-        <p class="hero-subtitle-script">Wishing you endless joy, radiant health &amp; unstoppable success! ✨</p>
+        <p class="hero-subtitle-script">Wishing you peaceful winter vibes, cozy mountain dreams, zero-stress days &amp; making Mummy-Papa proud! ✨🏔️</p>
 
         <div class="story-card-intro">
           <strong>Aaj 16 November ka din hai — ek behad khaas aur yaadgar din! 🌟</strong><br>
@@ -1695,20 +1707,30 @@
           <div class="marquee-track">
             <span class="ticker-chip gold">🎂 Happy Birthday Shatakshi Ji!</span>
             <span class="ticker-chip cyan">🌟 16 November Celebration</span>
+            <span class="ticker-chip purple">👨‍👩‍👧 Making Mummy &amp; Papa Proud</span>
+            <span class="ticker-chip rose">🏔️ Peaceful Mountain Vibes</span>
+            <span class="ticker-chip gold">❄️ Cozy Winter Evenings &amp; Coffee ☕</span>
+            <span class="ticker-chip cyan">🧘‍♀️ Zero-Stress Celebrations</span>
             <span class="ticker-chip purple">💫 Team GRIT &amp; Bright Future</span>
+            <span class="ticker-chip gold">🎬 Chill Movie Nights &amp; Treats 🍕</span>
             <span class="ticker-chip rose">🎉 Endless Smiles &amp; Happiness</span>
-            <span class="ticker-chip gold">🍰 May Every Dream Come True</span>
             <span class="ticker-chip cyan">🚀 Academic Excellence &amp; Triumph</span>
             <span class="ticker-chip gold">🎂 Happy Birthday Shatakshi Ji!</span>
             <span class="ticker-chip cyan">🌟 16 November Celebration</span>
+            <span class="ticker-chip purple">👨‍👩‍👧 Making Mummy &amp; Papa Proud</span>
+            <span class="ticker-chip rose">🏔️ Peaceful Mountain Vibes</span>
           </div>
           <div class="marquee-track reverse">
             <span class="ticker-chip rose">✨ Pure Blessings &amp; Good Health</span>
-            <span class="ticker-chip purple">🎊 August to November Memories</span>
+            <span class="ticker-chip purple">🚗 Midnight Surprise Party Vibes</span>
             <span class="ticker-chip gold">🎈 Always Rooting For You!</span>
+            <span class="ticker-chip cyan">☕ Warm Coffee &amp; Cozy Moments</span>
+            <span class="ticker-chip gold">🌟 May Every Dream Come True</span>
+            <span class="ticker-chip purple">🎊 August to November Memories</span>
             <span class="ticker-chip cyan">💙 A Very Special Friend</span>
             <span class="ticker-chip rose">✨ Pure Blessings &amp; Good Health</span>
-            <span class="ticker-chip purple">🎊 August to November Memories</span>
+            <span class="ticker-chip purple">🚗 Midnight Surprise Party Vibes</span>
+            <span class="ticker-chip gold">🎈 Always Rooting For You!</span>
           </div>
         </div>
 
@@ -1834,7 +1856,11 @@
               </p>
 
               <p>
-                May you always be blessed with <strong>vibrant good health, peace of mind, aur ek aisi muskaan jo hamesha sabka din roshan kar de</strong>. Aap jo bhi sapne dekhein, jo bhi unche mukam aap achieve karna chahein—chahe academic excellence ho ya life ka koi bhi bada goal—aap har ek field mein sabse aage rahein aur khoob tarakki karein! 📚🚀
+                Dil se yahi dua aur wish hai ki aapka sabse pyara sapna—<strong>apne Mummy &amp; Papa ka sar garv se uncha karna aur unhe sabse zyada proud feel karana</strong>—har kadam par poora ho. Unka aashirwad aur muskaan hamesha aapki sabse badi taqat banein! 👨‍👩‍👧✨
+              </p>
+
+              <p>
+                May you always be blessed with <strong>vibrant good health, zero-stress peaceful days, aur ek aisi muskaan jo hamesha sabka din roshan kar de</strong>. Aapko milein sukoon bhari <strong>hawaaein, pahadon (mountains) ke shaant nazaare, warm coffee ke cozy ghoont 🏔️☕, aur sardiyon ki suhani shaamein</strong>. Academic excellence se lekar life ke har unche mukaam tak—aap har field mein sabse aage rahein aur khoob tarakki karein! 📚🚀
               </p>
 
               <p>
@@ -1917,6 +1943,22 @@
         <div class="night-sky-chamber">
           <div class="sky-scrim-overlay"></div>
 
+          <!-- Subtle Dark Mountain Horizon Silhouette -->
+          <svg class="mountain-horizon-silhouette" viewBox="0 0 1200 240" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="mountainGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#0f172a" stop-opacity="0.85"/>
+                <stop offset="100%" stop-color="#030712" stop-opacity="0.98"/>
+              </linearGradient>
+              <linearGradient id="mountainGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#1e293b" stop-opacity="0.7"/>
+                <stop offset="100%" stop-color="#020617" stop-opacity="0.95"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,240 L0,160 L120,110 L240,165 L380,85 L500,140 L640,65 L760,135 L880,75 L1020,150 L1120,100 L1200,145 L1200,240 Z" fill="url(#mountainGrad2)" />
+            <path d="M0,240 L0,185 L90,145 L180,180 L290,115 L390,165 L490,95 L590,155 L700,90 L810,150 L920,110 L1030,170 L1130,130 L1200,165 L1200,240 Z" fill="url(#mountainGrad1)" />
+          </svg>
+
           <!-- The Radiant Wishing Star in the Sky -->
           <div class="wishing-star-target" id="wishingStarTarget">
             <div class="star-core" id="wishingStarCore"></div>
@@ -1939,10 +1981,11 @@
             <div class="wish-callout-pill">✨ Wish Maangiye ✨</div>
 
             <div class="quick-wish-tags">
-              <button class="wish-chip-btn selected" data-wish="Top Grades &amp; Academic Excellence 📚">Top Grades 📚</button>
-              <button class="wish-chip-btn" data-wish="Vibrant Health &amp; Boundless Energy 💙">Good Health 💙</button>
+              <button class="wish-chip-btn selected" data-wish="Making Mummy &amp; Papa Feel Proud 🌟">Mummy &amp; Papa Proud 🌟</button>
+              <button class="wish-chip-btn" data-wish="Mountains &amp; Warm Coffee 🏔️☕">Mountains &amp; Coffee 🏔️☕</button>
+              <button class="wish-chip-btn" data-wish="Top Grades &amp; Academic Excellence 📚">Top Grades 📚</button>
+              <button class="wish-chip-btn" data-wish="Zero Stress &amp; Vibrant Health 💙">Zero-Stress Health 💙</button>
               <button class="wish-chip-btn" data-wish="Unstoppable Success &amp; Big Dreams 🚀">Big Dreams 🚀</button>
-              <button class="wish-chip-btn" data-wish="Endless Genuine Smiles &amp; Peace 😊">Endless Smiles 😊</button>
               <button class="wish-chip-btn" data-wish="Treasured Friendship &amp; Anmol Saath 💎">Anmol Saath 💎</button>
             </div>
 
@@ -1962,7 +2005,7 @@
                 <div class="s-line">Muskan ka koi mol nahi hota, 😊✨</div>
                 <div class="s-line">Kuch rishton ka tol nahi hota, ⚖️❤️</div>
                 <div class="s-line">Dost to mil jate hai har raste par, 🚶‍♂️🛣️</div>
-                <div class="s-line highlight">Lekin har koi tumhari tarah anmol nahi hota! 💎🌟</div>
+                <div class="s-line highlight">Mummy-Papa ka sar garv se uncha ho, isse anmol koi sapna nahi hota! 👨‍👩‍👧🌟</div>
 
                 <div class="s-stanza-break"></div>
 
@@ -2124,20 +2167,20 @@
 
         <div class="celeb-grid">
           <div class="celeb-card">
-            <span class="c-icon">🌟</span>
-            <span class="c-label">Top scores &amp; endless success</span>
+            <span class="c-icon">👨‍👩‍👧</span>
+            <span class="c-label">Making Mummy &amp; Papa Proud 🌟</span>
           </div>
           <div class="celeb-card">
-            <span class="c-icon">💙</span>
-            <span class="c-label">Vibrant health &amp; peaceful vibes</span>
+            <span class="c-icon">🏔️</span>
+            <span class="c-label">Mountains, Cozy Winters &amp; Coffee ☕</span>
+          </div>
+          <div class="celeb-card">
+            <span class="c-icon">🧘‍♀️</span>
+            <span class="c-label">Zero-Stress Days &amp; Chill Movies 🎬</span>
           </div>
           <div class="celeb-card">
             <span class="c-icon">🚀</span>
-            <span class="c-label">Unstoppable milestones &amp; dreams</span>
-          </div>
-          <div class="celeb-card">
-            <span class="c-icon">😊</span>
-            <span class="c-label">Endless smiles every single day</span>
+            <span class="c-label">Top Academic Scores &amp; Unstoppable Success 📚</span>
           </div>
         </div>
 
@@ -2146,7 +2189,7 @@
         </button>
 
         <p class="milte-hain">Milte Hain Aage… 🤝✨</p>
-        <p class="milte-sub">In-person treat &amp; celebration pending hai — officially recorded! 🍕☕</p>
+        <p class="milte-sub">In-person treat (Coffee, Pizza, Burger, Momo &amp; Pani-Puri) pending hai — officially recorded! ☕🍕🍔🥟✨</p>
 
         <button class="btn-step-next" id="btnReplay" style="margin-top: 24px; padding: 12px 32px; font-size: 0.95rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(251,191,36,0.4); color: #fef08a;">
           <span>↺ Relive the Story from Chapter 1</span>
@@ -2314,6 +2357,43 @@
   }
   for (let i = 0; i < 80; i++) stars.push(new AmbientStar());
 
+  // Gentle, subtle falling winter snowflakes
+  const snowflakes = [];
+  class Snowflake {
+    constructor(init = false) { this.reset(init); }
+    reset(init = false) {
+      this.x = Math.random() * W;
+      this.y = init ? Math.random() * H : -15;
+      this.vy = Math.random() * 0.9 + 0.4;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.radius = Math.random() * 2.2 + 0.8;
+      this.alpha = Math.random() * 0.55 + 0.25;
+      this.sway = Math.random() * Math.PI * 2;
+      this.swaySpeed = Math.random() * 0.02 + 0.008;
+      this.swayAmp = Math.random() * 1.5 + 0.6;
+    }
+    update() {
+      this.y += this.vy;
+      this.sway += this.swaySpeed;
+      this.x += Math.sin(this.sway) * this.swayAmp + this.vx;
+      if (this.y > H + 15) this.reset();
+      if (this.x > W + 15) this.x = -15;
+      else if (this.x < -15) this.x = W + 15;
+    }
+    draw() {
+      ctx.save();
+      ctx.globalAlpha = this.alpha;
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowBlur = 4;
+      ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+  for (let i = 0; i < 48; i++) snowflakes.push(new Snowflake(true));
+
   const fw = [];
   class FWP {
     constructor(x, y, color, sp) {
@@ -2365,6 +2445,7 @@
   function renderLoop() {
     ctx.clearRect(0, 0, W, H);
     stars.forEach(s => s.tick());
+    snowflakes.forEach(sn => { sn.update(); sn.draw(); });
     balloons.forEach(b => { b.update(); b.draw(); });
     confetti.forEach(c => { c.update(); c.draw(); });
     for (let i = fw.length - 1; i >= 0; i--) {
@@ -2749,7 +2830,7 @@
   const wishingStarCore = document.getElementById('wishingStarCore');
   const megaCloudDrop = document.getElementById('megaCloudDrop');
   const btnReplayCloudDrop = document.getElementById('btnReplayCloudDrop');
-  let selectedWishText = "Top Grades & Academic Excellence 📚";
+  let selectedWishText = "Making Mummy & Papa Feel Proud 🌟";
 
   wishChips.forEach(chip => {
     chip.addEventListener('click', () => {
